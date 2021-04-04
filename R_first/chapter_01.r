@@ -77,3 +77,4 @@ ex
 lm.ex <- lm(y ~ x, data = ex)
 plot(y ~ x, data = ex)
 abline(lm.ex, col = 'red')
+
