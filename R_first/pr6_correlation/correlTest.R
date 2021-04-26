@@ -4,6 +4,9 @@ library(readxl)
 BodyRecord <- read_excel("BodyRecord.xlsx")
 View(BodyRecord)
 
+# 상관분석의 p-value는 상관계수가 0이라는 귀무가설에 대한 것
+# 귀무가설이 채택되는 경우는 많지 않음
+# 따라서 cor값을 더 중시하여 봐야함
 cor.test(BodyRecord$height, BodyRecord$weight)
 
 
@@ -12,12 +15,14 @@ cor.test(BodyRecord$height, BodyRecord$weight)
 
 
 Data1 <- read_excel("Data1.xls")
-tset1 <- subset(Data1, select = c("BF", "BM", "Happiness", "Peace"))
+# 데이터의 일부분 뽑는 방법
+tset1pr <- subset(Data1, select = c("BF", "BM", "Happiness", "Peace"))
 cor.test(tset1$BM, tset1$Happiness)
 
-install.packages("psych")
+# install.packages("psych")
 library(psych)
-pr <- partial.r(tset1, c(2,3), c(1))
+# 편상관분석, c(2, 3)두개를 상관분석 할건데, 공통된 c(1)은 제외하고
+pr <- partial.r(tset1, c(2,3), c(1)) 
 pr
 
 
@@ -41,15 +46,19 @@ cor.test(missKoreaRecord$referee, missKoreaRecord$viewers, method= "kendall")
 
 
 #교차분석 - 동질성 분석, 독립성 분석
+# 상관분석이지만 명목변수인것들
 
 Data2 <- read_excel("Data2.xls")
+
+#Group과 Age Group이 동질한지? 관계를 보고싶은 두 데이터를 ~A  + B
 M=xtabs(~Group + AgeGroup, data = Data2)
 M
 
 ht.out1 <- chisq.test(M)
 ht.out1
+# p-value = 0.1411 동질성이 있다는 귀무가설 기각 불가
 
-
+# 얘는 분산분석, 명목 + 숫자, 3개이상 분산분석
 ht.out2 <- lm(AGE~Group, data=Data2)
 anova(ht.out2)
 
