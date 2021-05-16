@@ -1,0 +1,68 @@
+Version: 2.0
+
+#########################
+# Alternatives Section
+#
+
+Alternatives: &alternatives
+# Here, we list all the alternatives, together with their attributes. 
+# We can use these attributes later in the file when defining 
+# preferenceFunctions. The attributes can be quantitative or 
+# qualitative.
+  Job1:
+  Job2:
+  Job3:
+#
+# End of Alternatives Section
+#####################################
+
+#####################################
+# Goal Section
+#
+
+
+Goal:
+# The goal spans a tree of criteria and the alternatives
+  name: Best job for me
+  description: 
+  author: unknown
+  preferences:
+    pairwise:
+      - [Salary, LifeQuality, 5]
+      - [Salary, Interest, 2]  
+      - [Salary, NearnessToFamily, 4]
+      - [LifeQuality,Interest, 1/2]
+      - [LifeQuality,NearnessToFamily, 1/2]
+      - [Interest,NearnessToFamily, 2]
+  children: 
+    Salary:
+      preferences:
+        pairwise:
+          - [Job1, Job2, 2]
+          - [Job1, Job3, 4]
+          - [Job2, Job3, 2]
+      children: *alternatives
+    LifeQuality:
+      preferences: 
+        pairwise:
+          - [Job1, Job2, 1/2]
+          - [Job1, Job3, 1/3]
+          - [Job2, Job3, 1/3]
+      children: *alternatives
+    Interest:
+      preferences: 
+        pairwise:
+          - [Job1, Job2, 1/7]
+          - [Job1, Job3, 1/3]
+          - [Job2, Job3, 3]
+      children: *alternatives
+    NearnessToFamily:
+      preferences: 
+        pairwise:
+          - [Job1, Job2, 1/4]
+          - [Job1, Job3, 1/7]
+          - [Job2, Job3, 1/2]
+      children: *alternatives
+#
+# End of Goal Section
+#####################################
